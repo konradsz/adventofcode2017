@@ -22,8 +22,7 @@ class Spiral:
         for row in self.spiral[::-1]:
             self.highestValue += 1
             row.append(self.highestValue)
-
-        self.spiral = [list(reversed(range(self.highestValue + 1, self.highestValue + 1 + self.size)))] + self.spiral
+        self.spiral.insert(0, list(reversed(range(self.highestValue + 1, self.highestValue + 1 + self.size))))
         self.highestValue += self.size
 
     def extendBottomLeft(self):
@@ -31,7 +30,6 @@ class Spiral:
         for row in self.spiral:
             self.highestValue += 1
             row.insert(0, self.highestValue)
-
         self.spiral.append(list(range(self.highestValue + 1, self.highestValue + 1 + self.size)))
         self.highestValue += (self.size)
 
