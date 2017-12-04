@@ -2,22 +2,23 @@
 
 import sys
 
-#if len(sys.argv) != 2:
-#    print("Provide input file as command line argument!")
-#else:
-#    file = open(sys.argv[1]).read().splitlines()
-#    valid = 0
-#    for entry in file:
-#        extended = entry.split()#.append([item[::-1] for item in entry.split()])
-#        extended += [item[::-1] for item in entry.split()]
-#        if len(entry.split()) * 2 == len(set(extended)):
-#            valid += 1
-
-    #print(valid)
-
 def checkIfAnagrams(word1, word2):
-    return len(word1) == len(word2) and len(set(word1) | set(word2)) == len(word1)
+    return sorted(word1) == sorted(word2)
 
-print(checkIfAnagrams("asd", "dsa1"))
+def checkLineForAnagrams(line):
+    for i in range(0, len(line)):
+        for j in range(0, len(line)):
+            if i != j and checkIfAnagrams(line[i], line[j]):
+                return True
+    return False
 
+if len(sys.argv) != 2:
+    print("Provide input file as command line argument!")
+else:
+    file = open(sys.argv[1]).read().splitlines()
+    valid = 0
+    for line in (entry.split() for entry in file):
+        if not checkLineForAnagrams(line):
+            valid += 1
 
+print(valid)
