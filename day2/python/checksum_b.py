@@ -10,9 +10,9 @@ else:
 
     checksum = 0
     for item in converted:
-        for digit1 in item:
-            for digit2 in item:
-                if digit1 % digit2 == 0 and digit1 != digit2:
-                    checksum += int(digit1 / digit2)
+        for i in range(0, len(item)):
+            for j in range(0, len(item)):
+                if item[i] % item[j] == 0 and i != j:
+                    checksum += int(item[i] / item[j])
 
     print(checksum)
