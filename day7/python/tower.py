@@ -4,18 +4,13 @@ import sys
 
 entries = []
 parents = set()
-tree = []
 
 def buildTree(name):
-    global entries
-    global parents
-
     if name not in parents:
         leaf = list(filter(lambda entry: entry['name'] == name, entries))[0]
         leaf['children'] = []
         return leaf
     else:
-        #print(name)
         node = list(filter(lambda entry: entry['name'] == name, entries))[0]
         node['children'] = [buildTree(child) for child in list(filter(lambda entry: entry['name'] == name, entries))[0]['children']]
         return node
@@ -30,24 +25,23 @@ def calculateWeights(node):
     return int(sum)
 
 def findImbalance(node):
-    #values = [item['total'] for item in node]
     values = []
     for counter, item in enumerate(node):
-        values.append([counter, item['total']])
-    allTheSame = lambda v: len(set([i[1] for i in v])) == 1
-    #print(values)
-    print(values)
-    if not allTheSame(values):
-        index, value = 0, 0
+        values.append([counter, item['total'], item['weight']])
+    areBalanced = lambda v: len(set([i[1] for i in v])) == 1
+
+    if not areBalanced(values):
+        index, total, value = 0, 0, 0
         for i in range(0, len(values)):
-            if values[i][1] > value:
-                value = values[i][1]
+            if values[i][1] > total:
+                total = values[i][1]
+                value = values[i][2]
                 index = i
 
-        print(index, value)
-        findImbalance(node[i]['children'])
+        print('Imbalanced! node index:', index, ', its value:', value)
+        findImbalance(node[index]['children'])
     else:
-        print('the same!')
+        print('Balanced!')
 
 
 if len(sys.argv) != 2:
@@ -63,25 +57,11 @@ else:
     parents = {entry['name'] for entry in entries if entry['children']}
     children = {child for entry in entries for child in entry['children']}
     root = next(iter(parents - children)) # retrieve first (and only) element from set
-    #print(root)
+    print('Root:', root)
 
     tree = buildTree(root)
-
-    extremes = [calculateWeights(child) for child in tree['children']]
-
-
+    extremes = {calculateWeights(child) for child in tree['children']}
     findImbalance(tree['children'])
 
-    for child in tree['children']:
-        if child['name'] == 'nhrla':
-            for child2 in child['children']:
-                if child2['name'] == 'idfyy':
-                    for child3 in child2['children']:
-                        if child3['name'] == 'aobgmc':
-                            for child4 in child3['children']:
-                                #print(child4['name'], child4['weight'], calculateWeights(child3))
-                                print(child2['total'])
-                                pass
+    print('Last node imbalanced by:', max(extremes) - min(extremes))
 
-    #print(max(extremes) - min(extremes))
-    #print(extremes)
