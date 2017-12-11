@@ -11,48 +11,48 @@ def countSteps(steps):
     steps_NW = steps.count('nw')
 
     # REMOVE OPPOSITE STEPS
-    while steps_N > 0 and steps_S > 0:
-        steps_N -= 1
-        steps_S -= 1
+    s = min(steps_N, steps_S)
+    steps_N -= s
+    steps_S -= s
 
-    while steps_NE > 0 and steps_SW > 0:
-        steps_NE -= 1
-        steps_SW -= 1
+    s = min(steps_NE, steps_SW)
+    steps_NE -= s
+    steps_SW -= s
 
-    while steps_NW > 0 and steps_SE > 0:
-        steps_NW -= 1
-        steps_SE -= 1
+    s = min(steps_NW, steps_SE)
+    steps_NW -= s
+    steps_SE -= s
 
     # COMBINE STEPS
-    while steps_SW > 0 and steps_SE > 0:
-        steps_SW -= 1
-        steps_SE -= 1
-        steps_S += 1
+    s = min(steps_SW, steps_SE)
+    steps_SW -= s
+    steps_SE -= s
+    steps_S += s
 
-    while steps_NW > 0 and steps_NE > 0:
-        steps_NW -= 1
-        steps_NE -= 1
-        steps_N += 1
+    s = min(steps_NW, steps_NE)
+    steps_NW -= s
+    steps_NE -= s
+    steps_N += s
 
-    while steps_NE > 0 and steps_S > 0:
-        steps_NE -= 1
-        steps_S -= 1
-        steps_SE += 1
+    s = min(steps_NE, steps_S)
+    steps_NE -= s
+    steps_S -= s
+    steps_SE += s
 
-    while steps_SE > 0 and steps_N > 0:
-        steps_SE -= 1
-        steps_N -= 1
-        steps_NE += 1
+    s = min(steps_SE, steps_N)
+    steps_SE -= s
+    steps_N -= s
+    steps_NE += s
 
-    while steps_NW > 0 and steps_S > 0:
-        steps_NW -= 1
-        steps_S -= 1
-        steps_SW += 1
+    s = min(steps_NW, steps_S)
+    steps_NW -= s
+    steps_S -= s
+    steps_SW += s
 
-    while steps_SW > 0 and steps_N > 0:
-        steps_SW -= 1
-        steps_N -= 1
-        steps_NW += 1
+    s = min(steps_SW, steps_N)
+    steps_SW -= s
+    steps_N -= s
+    steps_NW += s
 
     return steps_N + steps_NE + steps_SE + steps_S + steps_SW + steps_NW
 
