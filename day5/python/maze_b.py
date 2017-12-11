@@ -3,7 +3,7 @@
 import sys
 
 if len(sys.argv) != 2:
-    print("Provide input file as command line argument!")
+    print('Provide input file as command line argument!')
 else:
     maze = [int(number) for number in open(sys.argv[1]).read().splitlines()]
     mazeLength = len(maze)

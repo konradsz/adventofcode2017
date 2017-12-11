@@ -11,7 +11,7 @@ def solveCaptcha(input1, input2):
     return result
 
 if len(sys.argv) != 2:
-    print("Provide input file as command line argument!")
+    print('Provide input file as command line argument!')
 else:
     integerListInput = [int(digit) for digit in open(sys.argv[1]).read() if digit.isdigit()]
 
