@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import sys
-
 class Hash:
     def __init__(self, lst):
         self.lst = lst
