@@ -40,15 +40,13 @@ class Hash:
                 x ^= self.lst[j]
             hash += '{:02x}'.format(int(x))
 
-        print('Hash:', hash)
         return hash
 
 if __name__ == "__main__":
-    hash1 = Hash()
+    hash = Hash()
     input = [31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33]
-    hash1.reorderList(input)
-    print('Multiplication of two first elements:', hash1.lst[0] * hash1.lst[1])
+    hash.reorderList(input)
+    print('Multiplication of two first elements:', hash.lst[0] * hash.lst[1])
 
-    hash2 = Hash()
-    hash2.calculateHash('31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33')
+    print('Hash:', Hash().calculateHash('31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33'))
 
