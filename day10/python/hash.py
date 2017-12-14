@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
 class Hash:
-    def __init__(self, lst):
-        self.lst = lst
+    def __init__(self):
+        self.size = 256
+        self.lst = list(range(0, self.size))
         self.currentPosition = 0
         self.skipSize = 0
-        self.size = len(lst)
 
     def reorderList(self, inputLengths):
         for length in inputLengths:
@@ -44,11 +44,11 @@ class Hash:
         return hash
 
 if __name__ == "__main__":
-    hash1 = Hash(list(range(0, 256)))
+    hash1 = Hash()
     input = [31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33]
     hash1.reorderList(input)
     print('Multiplication of two first elements:', hash1.lst[0] * hash1.lst[1])
 
-    hash2 = Hash(list(range(0, 256)))
+    hash2 = Hash()
     hash2.calculateHash('31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33')
 
