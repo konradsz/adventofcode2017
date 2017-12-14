@@ -6,19 +6,19 @@ from hash import Hash
 
 input = 'oundnydw'
 
-def markNeighbour(grid, x, y, group):
+def markNeighbours(grid, x, y, group):
     if x >= 1 and grid[y][x - 1] == -1: # left neighbour
         grid[y][x - 1] = group
-        markNeighbour(grid, x - 1, y, group)
+        markNeighbours(grid, x - 1, y, group)
     if x < len(grid[y]) - 1 and grid[y][x + 1] == -1: # right neighbour
         grid[y][x + 1] = group
-        markNeighbour(grid, x + 1, y, group)
+        markNeighbours(grid, x + 1, y, group)
     if y >= 1 and grid[y - 1][x] == -1: # top neighbour
         grid[y - 1][x] = group
-        markNeighbour(grid, x, y - 1, group)
+        markNeighbours(grid, x, y - 1, group)
     if y < len(grid) - 1 and grid[y + 1][x] == -1: # bottom neighbour
         grid[y + 1][x] = group
-        markNeighbour(grid, x, y + 1, group)
+        markNeighbours(grid, x, y + 1, group)
 
 def findGroups(grid):
     nextGroupNumber = 0
@@ -27,9 +27,8 @@ def findGroups(grid):
         for x in range(0, len(grid[y])):
             if grid[y][x] == -1:
                 nextGroupNumber += 1
-                #print(x, y)
                 grid[y][x] = nextGroupNumber
-                markNeighbour(grid, x, y, nextGroupNumber)
+                markNeighbours(grid, x, y, nextGroupNumber)
 
     return nextGroupNumber
 
