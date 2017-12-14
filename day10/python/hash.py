@@ -41,6 +41,7 @@ class Hash:
             hash += '{:02x}'.format(int(x))
 
         print('Hash:', hash)
+        return hash
 
 if __name__ == "__main__":
     hash1 = Hash(list(range(0, 256)))
