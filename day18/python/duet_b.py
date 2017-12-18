@@ -18,32 +18,20 @@ class Program():
             self.registers[instruction[1]] = 0
 
         if instruction[0] == 'snd':
-            if instruction[1].isalpha():
-                self.sndQ.append(self.registers[instruction[1]])
-            else:
-                self.sndQ.append(int(instruction[1]))
+            self.sndQ.append(self.get(instruction[1]))
             self.sendCount += 1
             self.pc += 1
         elif instruction[0] == 'set':
-            if instruction[2].isalpha():
-                self.registers[instruction[1]] = self.registers[instruction[2]]
-            else:
-                self.registers[instruction[1]] = int(instruction[2])
+            self.registers[instruction[1]] = self.get(instruction[2])
             self.pc += 1
         elif instruction[0] == 'add':
-            if instruction[2].isalpha():
-                self.registers[instruction[1]] += self.registers[instruction[2]]
-            else:
-                self.registers[instruction[1]] += int(instruction[2])
+            self.registers[instruction[1]] += self.get(instruction[2])
             self.pc += 1
         elif instruction[0] == 'mul':
-            self.registers[instruction[1]] = self.registers[instruction[1]] * int(instruction[2])
+            self.registers[instruction[1]] = self.registers[instruction[1]] * self.get(instruction[2])
             self.pc += 1
         elif instruction[0] == 'mod':
-            if instruction[2].isalpha():
-                self.registers[instruction[1]] = self.registers[instruction[1]] % self.registers[instruction[2]]
-            else:
-                self.registers[instruction[1]] = self.registers[instruction[1]] % int(instruction[2])
+            self.registers[instruction[1]] = self.registers[instruction[1]] % self.get(instruction[2])
             self.pc += 1
         elif instruction[0] == 'rcv':
             if len(self.rcvQ) > 0:
@@ -53,17 +41,18 @@ class Program():
             else:
                 self.waiting = True
         elif instruction[0] == 'jgz':
-            if instruction[1].isalpha():
-                condValue = self.registers[instruction[1]]
-            else:
-                condValue = int(instruction[1])
+            condValue = self.get(instruction[1])
+
             if condValue > 0:
-                if instruction[2].isalpha():
-                    self.pc += self.registers[instruction[2]]
-                else:
-                    self.pc += int(instruction[2])
+                self.pc += self.get(instruction[2])
             else:
                 self.pc += 1
+
+    def get(self, value):
+        try:
+            return int(value)
+        except ValueError:
+            return self.registers[value]
 
     def run(self, instructions):
         if self.waiting and len(self.rcvQ) > 0:
