@@ -17,8 +17,7 @@ else:
     while not diagram[pos[1]][pos[0]].isspace():
         if diagram[pos[1]][pos[0]].isalpha(): # collect letters
             letters.append(diagram[pos[1]][pos[0]])
-
-        if diagram[pos[1]][pos[0]] == '+': # crossing, change direction
+        elif diagram[pos[1]][pos[0]] == '+': # crossing, change direction
             if direction == directions['right'] or direction == directions['left']:
                 if not diagram[pos[1] + 1][pos[0]].isspace():
                     direction = directions['down']
