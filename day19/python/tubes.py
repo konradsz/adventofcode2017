@@ -1,50 +1,38 @@
 #!/usr/bin/python3
 
 import sys
-from enum import Enum
+from operator import add
 
-class Direction(Enum):
-    Up = 0,
-    Down = 1,
-    Right = 2,
-    Left = 3
-
+directions = {'up': (0, -1), 'down': (0, 1), 'right': (1, 0), 'left': (-1, 0)}
 
 if len(sys.argv) != 2:
     print('Provide input file as command line argument!')
 else:
     diagram = open(sys.argv[1]).read().splitlines()
-    direction = Direction.Down
-    posX, posY = diagram[0].index('|'), 0
+    direction = directions['down']
+    pos = diagram[0].index('|'), 0
     letters = []
     steps = 0
 
-    while diagram[posY][posX] != ' ':
+    while not diagram[pos[1]][pos[0]].isspace():
         steps += 1
 
-        if diagram[posY][posX] == '+': # crossing
-            if direction == Direction.Right or direction == Direction.Left:
-                if diagram[posY + 1][posX] != ' ':
-                    direction = Direction.Down
-                    posY += 1
-                elif diagram[posY - 1][posX] != ' ':
-                    direction = Direction.Up
-                    posY -= 1
-            elif direction == Direction.Up or direction == Direction.Down:
-                if diagram[posY][posX + 1] != ' ':
-                    direction = Direction.Right
-                    posX += 1
-                elif diagram[posY][posX - 1] != ' ':
-                    direction = Direction.Left
-                    posX -= 1
-        else:
-            if diagram[posY][posX].isalpha(): # collect letters
-                letters.append(diagram[posY][posX])
+        if diagram[pos[1]][pos[0]].isalpha(): # collect letters
+            letters.append(diagram[pos[1]][pos[0]])
 
-            if   direction == Direction.Down:  posY += 1
-            elif direction == Direction.Up:    posY -= 1
-            elif direction == Direction.Right: posX += 1
-            elif direction == Direction.Left:  posX -= 1
+        if diagram[pos[1]][pos[0]] == '+': # crossing, change direction
+            if direction == directions['right'] or direction == directions['left']:
+                if not diagram[pos[1] + 1][pos[0]].isspace():
+                    direction = directions['down']
+                elif not diagram[pos[1] - 1][pos[0]].isspace():
+                    direction = directions['up']
+            elif direction == directions['up'] or direction == directions['down']:
+                if not diagram[pos[1]][pos[0] + 1].isspace():
+                    direction = directions['right']
+                elif not diagram[pos[1]][pos[0] - 1].isspace():
+                    direction = directions['left']
+
+        pos = tuple(map(add, pos, direction))
 
     print('Collected letters:', ''.join(letters))
     print('Steps taken:', steps)
