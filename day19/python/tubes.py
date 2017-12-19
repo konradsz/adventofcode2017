@@ -15,51 +15,37 @@ if len(sys.argv) != 2:
 else:
     diagram = open(sys.argv[1]).read().splitlines()
     direction = Direction.Down
-    posX = diagram[0].index('|')
-    posY = 0
+    posX, posY = diagram[0].index('|'), 0
     letters = []
     steps = 0
 
-    while True:
-        if diagram[posY][posX] == ' ':
-            break
-
+    while diagram[posY][posX] != ' ':
         steps += 1
 
-        if diagram[posY][posX].isalpha():
-            letters.append(diagram[posY][posX])
-            if direction == Direction.Down:
-                posY += 1
-            elif direction == Direction.Up:
-                posY -= 1
-            elif direction == Direction.Right:
-                posX += 1
-            elif direction == Direction.Left:
-                posX -= 1
-        elif diagram[posY][posX] == '+':
+        if diagram[posY][posX] == '+': # crossing
             if direction == Direction.Right or direction == Direction.Left:
                 if diagram[posY + 1][posX] != ' ':
-                    posY += 1
                     direction = Direction.Down
+                    posY += 1
                 elif diagram[posY - 1][posX] != ' ':
-                    posY -= 1
                     direction = Direction.Up
+                    posY -= 1
             elif direction == Direction.Up or direction == Direction.Down:
                 if diagram[posY][posX + 1] != ' ':
-                    posX += 1
                     direction = Direction.Right
+                    posX += 1
                 elif diagram[posY][posX - 1] != ' ':
-                    posX -= 1
                     direction = Direction.Left
-        elif diagram[posY][posX] == '|' or diagram[posY][posX] == '-':
-            if direction == Direction.Down:
-                posY += 1
-            elif direction == Direction.Up:
-                posY -= 1
-            elif direction == Direction.Right:
-                posX += 1
-            elif direction == Direction.Left:
-                posX -= 1
+                    posX -= 1
+        else:
+            if diagram[posY][posX].isalpha(): # collect letters
+                letters.append(diagram[posY][posX])
+
+            if   direction == Direction.Down:  posY += 1
+            elif direction == Direction.Up:    posY -= 1
+            elif direction == Direction.Right: posX += 1
+            elif direction == Direction.Left:  posX -= 1
 
     print('Collected letters:', ''.join(letters))
     print('Steps taken:', steps)
+
