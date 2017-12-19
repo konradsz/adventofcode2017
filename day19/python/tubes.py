@@ -15,8 +15,6 @@ else:
     steps = 0
 
     while not diagram[pos[1]][pos[0]].isspace():
-        steps += 1
-
         if diagram[pos[1]][pos[0]].isalpha(): # collect letters
             letters.append(diagram[pos[1]][pos[0]])
 
@@ -33,6 +31,7 @@ else:
                     direction = directions['left']
 
         pos = tuple(map(add, pos, direction))
+        steps += 1
 
     print('Collected letters:', ''.join(letters))
     print('Steps taken:', steps)
