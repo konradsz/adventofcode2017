@@ -16,10 +16,14 @@ def rotate(square):
 def enhance(pattern, ss):
     size = len(pattern)
     rs = int(size / ss)
+    print('ss', ss, 'rs', rs)
     newSquares = []
-    for i in range(rs):
-        for j in range(rs):
-            square = [s[j * ss:j * ss + ss] for s in pattern[i * ss:i * ss + ss]]
+    print('pattern', pattern, list(range(2)))
+    for i in range(2):
+        for j in range(2):
+            #square = [s[j * ss:j * ss + ss] for s in pattern[i * ss:i * ss + ss]]
+            square = []
+            print('square', square, 'i', i, 'j', j)
 
             # make it better, add all flips for each rotation
             possibilities = [square, flipV(square), flipH(square), flipV(flipH(square))]
@@ -33,17 +37,20 @@ def enhance(pattern, ss):
                 if flipH(rotated) not in possibilities:
                     possibilities.append(flipH(rotated))
 
+            #print(len(possibilities))
             for rule in rules:
                 for possibility in possibilities:
+                    print(rule[0], possibility)
                     if rule[0] == possibility:
-                        new = rule[1]
+                        #new = rule[1]
                         newSquares.append(rule[1])
 
+    print(len(newSquares))
     pattern = []
-    for i in range(rs):
-        row = []
-        for j in range(rs):
-            pass
+    #for i in range(rs):
+    #    row = []
+    #    for j in range(rs):
+    #        pass
 
     return pattern
 
@@ -57,12 +64,17 @@ else:
         out_ = rule[1].split('/')
         rules.append((in_, out_))
 
-    pattern = ['.#.',
-               '..#',
-               '###']
+    #pattern = ['.#.',
+    #           '..#',
+    #           '###']
+    pattern = ['#..#',
+               '....',
+               '....',
+               '#..#']
 
     for _ in range(1):
         size = len(pattern)
+        print('size', size)
         if size % 2 == 0:
             pattern = enhance(pattern, 2)
         elif size % 3 == 0:
@@ -83,6 +95,5 @@ else:
         p.append(row)
 
     print(p)
+    print('DUPA')
     #return pattern
-
-
