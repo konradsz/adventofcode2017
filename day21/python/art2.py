@@ -11,7 +11,7 @@ def flipV(square):
     return [row[::-1] for row in square]
 
 def rotate(square):
-    return list(map("".join, zip(*square[::-1])))
+    return list(map(''.join, zip(*square[::-1])))
 
 def enhance(pattern, ss):
     size = len(pattern)
@@ -19,16 +19,15 @@ def enhance(pattern, ss):
     print('ss', ss, 'rs', rs)
     newSquares = []
     print('pattern', pattern, list(range(2)))
-    for i in range(2):
-        for j in range(2):
-            #square = [s[j * ss:j * ss + ss] for s in pattern[i * ss:i * ss + ss]]
-            square = []
+    for i in range(rs):
+        for j in range(rs):
+            square = [s[j * ss:j * ss + ss] for s in pattern[i * ss:i * ss + ss]]
             print('square', square, 'i', i, 'j', j)
 
             # make it better, add all flips for each rotation
             possibilities = [square, flipV(square), flipH(square), flipV(flipH(square))]
             rotated = square
-            for i in range(3):
+            for _ in range(3):
                 rotated = rotate(rotated)
                 if rotated not in possibilities:
                     possibilities.append(rotated)
@@ -45,7 +44,8 @@ def enhance(pattern, ss):
                         #new = rule[1]
                         newSquares.append(rule[1])
 
-    print(len(newSquares))
+    print('newSquares len:', len(newSquares))
+    print(newSquares)
     pattern = []
     #for i in range(rs):
     #    row = []
@@ -82,15 +82,17 @@ else:
 
     #print(pattern)
 
-    dupa = ['A.B', 'E.F', 'I.J', 'C.D', 'G.H', 'K.L', 'M.N', 'Q.R', 'U.V', 'O.P', 'S.T', 'W.Z']
+     #= ['A.B', 'E.F', 'I.J', 'C.D', 'G.H', 'K.L', 'M.N', 'Q.R', 'U.V', 'O.P', 'S.T', 'W.Z']
+    dupa = [['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...']]
 
     p = []
 
-    ss = 3
+    ss = 2
     for i in range(3):
         row = ''
         for j in range(2):
-            row = row + dupa[i + j * ss]
+            row = dupa[j]
+            #row = row + dupa[i + j * ss]
 
         p.append(row)
 
