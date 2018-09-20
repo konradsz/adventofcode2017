@@ -1,5 +1,4 @@
-use std::fs::File;
-use std::io::prelude::*;
+use std::fs;
 
 fn captcha(input1: &Vec<u32>, input2: &Vec<u32>) -> u32 {
     let mut sum = 0;
@@ -12,11 +11,8 @@ fn captcha(input1: &Vec<u32>, input2: &Vec<u32>) -> u32 {
 }
 
 fn main() {
-    let mut f = File::open("../input").expect("file not found");
-
-    let mut contents = String::new();
-    f.read_to_string(&mut contents)
-        .expect("something went wrong reading the file");
+    let contents = fs::read_to_string("../input")
+        .expect("file not found");
 
     let mut input1 = Vec::new();
     for c in contents.chars() {
