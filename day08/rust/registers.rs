@@ -48,39 +48,19 @@ fn main() {
             registers.insert(condition_register, 0);
         }
 
-        match condition {
-            ">" => {
-                if registers.get(condition_register).unwrap() > &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
-            "<" => {
-                if registers.get(condition_register).unwrap() < &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
-            ">=" => {
-                if registers.get(condition_register).unwrap() >= &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
-            "<=" => {
-                if registers.get(condition_register).unwrap() <= &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
-            "==" => {
-                if registers.get(condition_register).unwrap() == &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
-            "!=" => {
-                if registers.get(condition_register).unwrap() != &condition_value {
-                    execute(&mut registers, operation, register, value, &mut highest_value);
-                }
-            },
+        let should_execute = match condition {
+            ">" => registers.get(condition_register).unwrap() > &condition_value,
+            "<" => registers.get(condition_register).unwrap() < &condition_value,
+            ">=" => registers.get(condition_register).unwrap() >= &condition_value,
+            "<=" => registers.get(condition_register).unwrap() <= &condition_value,
+            "==" => registers.get(condition_register).unwrap() == &condition_value,
+            "!=" => registers.get(condition_register).unwrap() != &condition_value,
             _ => panic!("unknown condition")
         };
+
+        if should_execute {
+            execute(&mut registers, operation, register, value, &mut highest_value);
+        }
     }
 
     let max_value = registers.values().max().unwrap();
