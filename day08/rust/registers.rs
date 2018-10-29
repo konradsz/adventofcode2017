@@ -1,65 +1,39 @@
 use std::fs;
 use std::collections::HashMap;
 
-enum Operation {
-    Inc,
-    Dec
-}
-
-fn execute(registers: &mut HashMap<&str, i32>, operation: Operation, register: &str, value: i32, highest_value: &mut i32) {
-    match operation {
-        Operation::Inc => {
-            *registers.get_mut(register).unwrap() += value;
-        },
-        Operation::Dec => {
-            *registers.get_mut(register).unwrap() -= value;
-        }
-    }
-
-    if *registers.get(register).unwrap() > *highest_value {
-        *highest_value = *registers.get(register).unwrap();
-    }
-}
-
 fn main() {
     let content = fs::read_to_string("../input").expect("file not found");
 
-    let mut registers = HashMap::new();
-    let mut highest_value = 0;
+    let mut registers: HashMap<String, i32> = HashMap::new();
+    let mut highest_value = i32::min_value();
 
     for line in content.lines() {
         let mut parts_iter = line.split_whitespace();
         let register = parts_iter.next().unwrap();
-        let operation = match parts_iter.next().unwrap() {
-            "inc" => Operation::Inc,
-            "dec" => Operation::Dec,
+        let operation = parts_iter.next().unwrap();
+        let value = match operation {
+            "inc" => parts_iter.next().unwrap().parse::<i32>().unwrap(),
+            "dec" => -1 * parts_iter.next().unwrap().parse::<i32>().unwrap(),
             _ => panic!("unknown operation")
         };
-        let value = parts_iter.next().unwrap().parse::<i32>().unwrap();
         parts_iter.next(); // skip if
-        let condition_register = parts_iter.next().unwrap();
+        let condition_register = parts_iter.next().unwrap().to_string();
         let condition = parts_iter.next().unwrap();
         let condition_value = parts_iter.next().unwrap().parse::<i32>().unwrap();
 
-        if !registers.contains_key(register) {
-            registers.insert(register, 0);
-        }
-        if !registers.contains_key(condition_register) {
-            registers.insert(condition_register, 0);
-        }
-
         let should_execute = match condition {
-            ">" => registers.get(condition_register).unwrap() > &condition_value,
-            "<" => registers.get(condition_register).unwrap() < &condition_value,
-            ">=" => registers.get(condition_register).unwrap() >= &condition_value,
-            "<=" => registers.get(condition_register).unwrap() <= &condition_value,
-            "==" => registers.get(condition_register).unwrap() == &condition_value,
-            "!=" => registers.get(condition_register).unwrap() != &condition_value,
+            ">" => *registers.entry(condition_register).or_insert(0) > condition_value,
+            "<" => *registers.entry(condition_register).or_insert(0) < condition_value,
+            ">=" => *registers.entry(condition_register).or_insert(0) >= condition_value,
+            "<=" => *registers.entry(condition_register).or_insert(0) <= condition_value,
+            "==" => *registers.entry(condition_register).or_insert(0) == condition_value,
+            "!=" => *registers.entry(condition_register).or_insert(0) != condition_value,
             _ => panic!("unknown condition")
         };
 
         if should_execute {
-            execute(&mut registers, operation, register, value, &mut highest_value);
+            *registers.entry(register.to_string()).or_insert(0) += value;
+            highest_value = highest_value.max(registers[register]);
         }
     }
 
