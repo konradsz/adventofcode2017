@@ -1,13 +1,18 @@
 use std::fs;
 
+struct Bridge {
+    strength: usize,
+    length: usize,
+}
+
 fn build_bridge(
-    bridges: &mut Vec<(usize, usize)>,
+    bridges: &mut Vec<Bridge>,
     components: &Vec<(usize, usize)>,
     port: usize,
-    strenght: usize,
+    strength: usize,
     length: usize,
 ) {
-    bridges.push((strenght, length));
+    bridges.push(Bridge { strength, length });
     let connectors: Vec<usize> = components
         .iter()
         .filter(|component| component.0 == port || component.1 == port)
@@ -29,7 +34,7 @@ fn build_bridge(
         let mut reduced_components = components.to_vec();
         reduced_components.remove(index);
 
-        let calculate_strength = |component: (usize, usize)| component.0 + component.1 + strenght;
+        let calculate_strength = |component: (usize, usize)| component.0 + component.1 + strength;
         build_bridge(
             bridges,
             &reduced_components,
@@ -55,17 +60,17 @@ fn main() {
 
     build_bridge(&mut bridges, &components, 0, 0, 0);
 
-    let max_strenght = bridges
+    let max_strength = bridges
         .iter()
-        .max_by(|&bridge_1, &bridge_2| (*bridge_1).0.cmp(&bridge_2.0))
+        .max_by(|&bridge_1, &bridge_2| (*bridge_1).strength.cmp(&bridge_2.strength))
         .unwrap()
-        .0;
-    println!("{}", max_strenght);
+        .strength;
+    println!("{}", max_strength);
 
-    let strenght_of_the_longest = bridges
+    let strength_of_the_longest = bridges
         .iter()
-        .max_by(|&bridge_1, &bridge_2| (*bridge_1).1.cmp(&bridge_2.1))
+        .max_by(|&bridge_1, &bridge_2| (*bridge_1).length.cmp(&bridge_2.length))
         .unwrap()
-        .0;
-    println!("{}", strenght_of_the_longest);
+        .strength;
+    println!("{}", strength_of_the_longest);
 }
